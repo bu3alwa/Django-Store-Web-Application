@@ -2,9 +2,9 @@
 from setuptools import setup, find_packages
 
 setup(
-        name='pyapp',
+        name='backend',
         version='0.1',
-        packages=['pyapp'],
+        packages=['backend'],
         zip_safe=False,
         include_package_data=True,
         install_requires=[
@@ -12,5 +12,7 @@ setup(
             'python-daemon', 
             'tornado', 
             'pyyaml', 
-            'flask']
+            'flask',
+            'python-firebase',
+            'WTForms']
 )

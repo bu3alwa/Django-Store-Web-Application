@@ -2,6 +2,9 @@
 .vagrant
 *.log
 
+# Ignore config file
+config.yaml
+
 # python compiled binary
 __pycache__/
 *.py[cod]
