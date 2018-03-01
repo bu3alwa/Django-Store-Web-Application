@@ -1,0 +1,11 @@
+{% extends "core/layouts/base.html" %}
+{% block content %}
+<form action="login/" method="post">
+    <label for="username">Username: <label>
+    <input id="username" type="text" name="username" value="{{ username}}">
+    <label for="username">Password: <label>
+    <input id="username" type="password" name="username" value="{{ username}}">
+    <input type="submit" value="OK">
+    {% csrf_token %}
+</form>
+{% endblock %}
