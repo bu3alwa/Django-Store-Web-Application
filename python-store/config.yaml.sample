@@ -1,4 +1,0 @@
-port: 80
-project-id: 'Enter ID here'
-secret-key: 'Enter-key-here'
-firebase-url: 'https://ID.firebaseio.com/'
