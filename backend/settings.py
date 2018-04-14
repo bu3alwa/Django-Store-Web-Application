@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'backend',
     'store',
     'templates',
+    'termsandconditions',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "templates/static"),
         ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+AUTH_USER_MODEL = 'authentication.CustomUser'
+
+LOGIN_URL='/login'
+LOGIN_REDIRECT_URL = '/account/profile'

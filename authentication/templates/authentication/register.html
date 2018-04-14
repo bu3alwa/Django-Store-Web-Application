@@ -1,17 +1,10 @@
 {% extends "core/layouts/base.html" %}
 {% block content %}
+
 <div class="row justify-content-center">
 <div class="row">
 <form method="post">
 <div class="col-centered">
-
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li>{{ message|escape }} </li>
-        {% endfor %}
-    </ul>
-{% endif %}
 
 {% if form.errors %}
     <ul>

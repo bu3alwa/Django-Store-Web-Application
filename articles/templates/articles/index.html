@@ -1,0 +1,25 @@
+{% extends "core/layouts/base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="row">
+<form method="post">
+<div class="col-centered">
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message|escape }} </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% for article in articles %}
+<div><a href='{{ article.slug }}'>{{ article.title }}</a></div>
+    {% if article.description %}
+    <div>{{ article.description }}</div>
+    {% endif %}
+    <div><a>Posted on {{ article.Created_at }}</a></div>
+{% endfor %}
+</form>
+</div>
+</div>
+{% endblock %}

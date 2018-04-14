@@ -1,0 +1,16 @@
+{% extends "core/layouts/base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+<Strong>You have been succesfully logged out</strong>
+<div class="row justify-content-center">
+ <p><a href="/">Redirecting to homepage. Click here if it doesn't redirect.</a></p>
+</div>
+</div>
+{% endblock %}
+{% block js_head %}
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.location.href = "/";
+        }, 2000);
+    </script>
+{% endblock %}

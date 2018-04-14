@@ -1,36 +1,26 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
+from .forms import RegisterForm, LoginForm
 
-# Create your views here.
-
-def register_view(self, request, username, password, email, firstname, lastname):
-    if request.user.is_authenticated:
-        u = User.objects.create_user(username, email, password)
-        u.last_name = lastname
-        u.first_name = firstname
-        u.save()
-        return redirect('/')
-    else:
-        return redirect('/')
-
-def login_view(self, request, username, password):
-    if not request.user.is_authenticated:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            #success
-            return redirect('/')
+def register_view(request):
+    if request.method == "POST":
+        if not request.user.is_authenticated:
+            f = RegisterForm(request.POST)
+            if f.is_valid():
+                f.save()
+                return redirect("register_success")
         else:
-            #error
-            return redirect('login')
+            return redirect("/")
+
     else:
-        #render
-        return render(request, 'authentication/login.html')
+        if request.user.is_authenticated:
+            return redirect("/")
+        else:
+            f = RegisterForm()
 
-def logout_view(request):
-    logout(request)
-    return redirect('/')
+    return render(request, 'authentication/register.html', {'form': f})
 
+
+def register_sucess(request):
+    return render(request, 'authentication/register_success.html')
