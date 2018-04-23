@@ -6,27 +6,8 @@ from authentication.models import CustomUser
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from .choices import *
-
-
-
-class ProfileManager(models.Manager):
-    def create_profile(self, address, city, country, phone_number, date_of_birth, user):
-        if not address:
-            raise ValueError('Must give an address')
-        if not city:
-            raise ValueError('Must give a city')
-        if not country:
-            raise ValueError('Must give a country')
-        if not phone_number:
-            raise ValueError('Must give a phone number')
-        if not date_of_birth:
-            raise ValueError('Must have a date of birth')
-
-        profile = self.model(address=address, city=city, country=country, phone_number=phone_number, date_of_birth=date_of_birth, user=user)
-        profile.full_clean()
-        profile.save()
-        return profile
-        
+from store.models import SubscriptionModel
+       
 
 class Profile(models.Model):
     #model
@@ -53,10 +34,25 @@ class Profile(models.Model):
             settings.AUTH_USER_MODEL, 
             on_delete=models.CASCADE)
 
-    objects = ProfileManager()
-
     @property
     def full_address(self):
         "Returns users full address."
         return "%s %s %s" % (self.address, self.city, self.country)
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+            settings.AUTH_USER_MODEL, 
+            on_delete=models.CASCADE)
+
+    subscription = models.OneToOneField(
+            SubscriptionModel,
+            on_delete=models.CASCADE)
+
+    renew = models.BooleanField()
+
+
+    created_at = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
 

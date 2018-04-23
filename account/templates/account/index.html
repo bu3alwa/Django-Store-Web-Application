@@ -1,0 +1,44 @@
+{% extends "core/layouts/base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="card mb-6 box-shadow">
+<div class="card-body">
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li>{{ message|escape }} </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+<h3 class="card-title">Account</h3>
+<div class="card-text">
+    <ul class="list-unstyled">
+        <li><a>Email: {{ user.email }}</a></li>
+        <li><a href="/authentication/change-password">Change Password</a></li>
+        <li><a class="card-text" href="/account/profile">Change Profile</a></li>
+    </ul>
+</div>
+<h3 class="card-title">Subscription Plan</h3>
+{% if account %}
+<div class="card-text">
+    <ul class="list-unstyled">
+        <li><a>Subscription Plan: {{ account.subscription.name }}</a></li>
+        <li><a>Subscription End Date: {{ account.end_date }}</a></li>
+        <li><a href="/account/billing">Update Plan</a></li>
+        <li><a href="/account/cancel">Cancel Plan</a></li>
+    </ul>
+</div>
+{% else %}
+    <form method="post">
+    <button type="submit" class="btn btn-primary">Start Free Trial</button>
+    {% csrf_token %}
+    </form>
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+{% endblock %}

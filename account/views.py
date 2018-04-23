@@ -3,14 +3,45 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate, get_user_model
 from .forms import ProfileForm
 from django.contrib import messages
-from .models import Profile
+from .models import Profile, Subscription
+from store.models import SubscriptionModel
 from django.contrib.auth.decorators import login_required
-
+from datetime import date, timedelta
 
 # Create your views here.
 
+@login_required
 def index(request):
-    return redirect('/account/profile', permanent=True)
+    user = request.user
+    sub_exists = Subscription.objects.filter(user=user).exists()
+
+    if request.method == "POST":
+        if sub_exists:
+            messages.success(request, "Free Trial has expired")
+            return redirect('/account')
+
+        else:
+            today = date.today()
+            submodel = SubscriptionModel.objects.filter(name='Free Trial').first()
+            end_date = today + timedelta(days=int(submodel.length))
+            s = Subscription.objects.create(
+                    user=user,
+                    renew=False,
+                    subscription=submodel,
+                    start_date=date.today(),
+                    end_date=end_date,
+                    )
+            s.save()
+
+            return redirect('/account')
+
+    else:
+        if sub_exists:
+            subscription = Subscription.objects.filter(user=user).order_by('-end_date').first()
+
+            return render(request, 'account/index.html', {'user': user, 'account': subscription })
+
+        return render(request, 'account/index.html', {'user': user })
 
 @login_required
 def profile(request):
@@ -41,3 +72,6 @@ def profile(request):
 
     return render(request, 'account/profile.html', {'form': f})
 
+@login_required
+def billing(request):
+    pass

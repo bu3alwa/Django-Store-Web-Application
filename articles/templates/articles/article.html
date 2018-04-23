@@ -4,15 +4,12 @@
 <div class="row">
 <div class="col-md-12 blog-main">
 
-{% for article in articles %}
-<div class="blog-post"><a href='{{ article.slug }}'><h2 class="blog-post-title">{{ article.title }}</h2></a>
+<div class="blog-post"><h2 class="blog-post-title" href='{{ article.slug }}'>{{ article.title }}</h2>
 <p class="blog-post-meta">Posted on {{ article.date }}</p>
 <hr>
 <p>{{ article.body|safe }}</p>
 </div>
-{% endfor %}
 </div>
 </div>
 </div>
-
 {% endblock %}

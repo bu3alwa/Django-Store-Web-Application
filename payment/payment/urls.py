@@ -1,4 +1,4 @@
-"""backend URL Configuration
+"""payment URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
@@ -14,13 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path, include
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('' , include('store.urls')),
-    path('' , include('authentication.urls')),
-    path('account/' , include('account.urls')),
-    path('blog/' , include('articles.urls')),
-    re_path(r'^summernote/', include('django_summernote.urls')),
 ]

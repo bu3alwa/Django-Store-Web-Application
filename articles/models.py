@@ -18,9 +18,11 @@ class Article(models.Model):
             max_length=255)
 
     body = models.TextField(_("Body"))
+    date = models.DateField(_("Date"))
 
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateField(auto_now=True)
+
 
     def _get_unique_slug(self):
         slug = slugify(self.title)
@@ -31,7 +33,7 @@ class Article(models.Model):
         return unique_slug
 
     def get_absolute_url(self):
-        return reverse('articles.views.post_detail', args=[str(self.id)])
+        return reverse('articles.views.article_detail', args=[str(self.id)])
 
     def __str__(self):
         return self.title
@@ -40,3 +42,5 @@ class Article(models.Model):
         if not self.slug:
             self.slug = self._get_unique_slug()
         super(Article, self).save(*args, **kwargs)
+
+

@@ -43,5 +43,11 @@ tests/coverage_html/
 tests/.coverage
 build/
 tests/report/
+django-summernote
 
-
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py

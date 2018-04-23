@@ -4,6 +4,9 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from .models import CustomUser 
+from django.forms.fields import Field
+
+setattr(Field, 'is_checkbox', lambda self: isinstance(self.widget, forms.CheckboxInput))
 
 class ForgotPasswordForm(forms.Form):
     Username = forms.CharField(label='Username', max_length=50)
@@ -55,6 +58,15 @@ class RegisterForm(UserCreationForm):
                     'placeholder': 'Email'
                     })
             )
+
+    accept_tos = forms.BooleanField(
+            label=_("TOS"),
+            required=True,
+            widget=forms.CheckboxInput(
+                attrs={
+                    'class': 'checkbox',
+                    })
+                )
 
     def clean_email(self):
         email = self.cleaned_data.get('email')

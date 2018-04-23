@@ -1,10 +1,11 @@
 {% extends "core/layouts/base.html" %}
 {% block content %}
 <div class="row justify-content-center">
-<div class="row">
-<form method="post">
-<div class="col-centered">
+<div class="card mb-4 box-shadow">
+<div class="card-body">
 
+<h2 class="card-title">Profile</h2>
+<form method="post">
 {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -29,8 +30,10 @@
 <button type="submit"  class="btn btn-primary">Submit</button>
 </div>
 {% csrf_token %}
-
 </form>
+
 </div>
+</div>
+
 </div>
 {% endblock %}

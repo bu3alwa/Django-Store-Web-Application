@@ -14,6 +14,7 @@
     {% endblock %}
     {% block css_site %}
     <link href="{% static "css/style.css"%}" rel="stylesheet">
+    <link href="{% static "css/blog.css"%}" rel="stylesheet">
     {% endblock %}
     {% block js_html5_shim %}
     <!--[if lt IE 9]>
@@ -24,7 +25,7 @@
     {% endblock %}
 {% endblock %}
 </head>
-<body>
+<body class="d-flex flex-column">
 {% block body %}
     {% block navbar_wrapper %}
     <header>
@@ -43,7 +44,7 @@
             <a class="nav-link" href="/subscribe">Subscribe</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/subscribe">Blog</a>
+            <a class="nav-link" href="/blog">Blog</a>
           </li>
           <li class="nav-item">
           <li class="nav-item">
@@ -76,7 +77,7 @@
     {% endblock %}
 
     {% block container_wrapper %}
-    <div class="container-fluid p-3">
+    <section class="container-fluid p-3 flex-fill">
     {% block container %}
         {% block pre_content %}
         {% endblock %}
@@ -85,7 +86,7 @@
         {% block post_content %}
         {% endblock %}
     {% endblock %}
-    </div>
+    </section>
     {% endblock %}
 
     {% block js_jquery %}
@@ -98,15 +99,54 @@
     {% block google_analytics %}
     <script>
     {% if not DEBUG %}
-        var _gaq=[['_setAccount','{% block google_analytics_id %}UA-XXXXX-X{% endblock %}'],['_trackPageview']];
+var _gaq=[['_setAccount','{{ GOOGLE_ANALYTICS }}'],['_trackPageview']];
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
         s.parentNode.insertBefore(g,s)}(document,'script'));
     {% endif %}
     </script>
     {% endblock %}
+    {% block zendesk %}
+    <script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="{{ ZENDESK }}",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+/*]]>*/</script>
+    {% endblock %}
     {% block js_footer %}
     {% endblock %}
+
+    {% block footer %}
+<footer class="footer bg-dark font-small pt-4 mt-4">
+    <div class="container-fluid text-center text-md-left text-light">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="text-uppercase">Footer Content</h5>
+                <p>Insert content here.</p>
+            </div>
+            <div class="col-md-6">
+                <h5 class="text-uppercase">Links</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="text-light" href="#">Blog</a>
+                    </li>
+                    <li>
+                        <a class="text-light" href="#">Support</a>
+                    </li>
+                    <li>
+                        <a class="text-light" href="#">Terms of Service</a>
+                    </li>
+                    <li>
+                        <a class="text-light" href="#">Download</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright py-3 text-center text-white">
+        © 2018 Copyright:
+        <a>bdoonlag.com </a>
+    </div>
+</footer>
+    {% endblock %}
+
 {% endblock %}
 </body>
 </html>

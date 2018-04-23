@@ -1,0 +1,23 @@
+{% extends "core/layouts/base.html" %}
+{% block content %}
+<div class ="container">
+<div class="card-deck mb-3 text-center">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4>Email</h4>
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary" href="#">Email Us</button>
+        </div>
+    </div>
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4>Live Chat</h4>
+        </div>
+        <div class="card-body">
+            <button type="button" class="btn btn-lg btn-block btn-outline-primary" onclick="javascript:$zopim.livechat.window.show();">Chat Now</button>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
