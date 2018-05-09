@@ -15,7 +15,7 @@ class KnetProcess(View):
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
         
-        trans = Transactions.objects.select_related("user").filter(KnetTransactions__paymentid__contains=paymentid)
+        trans = Transactions.objects.select_related("user").get(KnetTransactions__paymentid__contains=paymentid)
 
         if trans.user != request.user:
             return HttpResponse('Unauthorized', status=401)
