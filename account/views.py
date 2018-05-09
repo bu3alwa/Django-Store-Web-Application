@@ -14,9 +14,10 @@ from payment.utils import GotapHandler, KnetHandler
 def profile_required(function):
     def wrap(request, *args, **kwargs):
         user = request.user
-        try:
+        profile = Profile.objects.filter(user=user).exists()
+        if profile:
             profile = request.user.Profile
-        except ObjectDoesNotExist:
+        else:
             profile = None
 
         if profile == None:
@@ -29,11 +30,11 @@ def profile_required(function):
 @login_required
 def index(request):
     user = request.user
-    try:
-        sub = request.user.Subscription
-    except ObjectDoesNotExist:
+    sub = Subscription.objects.filter(user=request.user).exists()
+    if sub:
+        sub = Subscription.objects.filter(user=user)
+    else:
         sub = None
-
 
     if request.method == "POST":
         if sub != None:
