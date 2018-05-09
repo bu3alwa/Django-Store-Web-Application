@@ -48,7 +48,7 @@ class KnetProcess(View):
         if trans.subscription_update == True:
             return HttpReponseNotFound("Already updated")
         #KnetUpdate(knettrans, result, auth, ref, transid, postdate, url):
-        KnetUpdate(trans.KnetTransactions, result, auth, ref, transid, postdate, request.path) 
+        url = KnetUpdate(trans.KnetTransactions, result, auth, ref, transid, postdate, request.path) 
         trans.refresh_from_db()
 
         if trans.KnetTransactions.paid:
@@ -72,6 +72,7 @@ class KnetProcess(View):
                     )
 
         Transactions.objects.filter(pk=trans.pk).update(subscription_updated=True)
+        return HttpResponse(url)
 
 
 def gotap_process(request):

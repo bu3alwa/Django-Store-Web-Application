@@ -91,7 +91,6 @@ def KnetUpdate(knettrans, result, auth, ref, transid, postdate, url):
     KnetTransactions.objects.filter(pk=knettrans.pk).update(paid=paid, result=result, auth=auth, ref=ref, transid=transid)
 
     
-    redirect_url = "https://bdoonlag.com/payment/knet?paymentid=" + knettrans.paymentid
-    knet.RedirectPayment(redirect_url, knettran.paymentid)
+    return "https://bdoonlag.com/payment/knet?paymentID=" + knettrans.paymentid
 
 
