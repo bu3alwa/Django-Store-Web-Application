@@ -10,7 +10,7 @@ from .utils import *
 class KnetProcess(View):
     def get(self, request, *args, **kwargs):
         paymentid = request.GET.get("paymentid")
-        trans_exists = Transactions.select_related("KnetTransactions").KnetTransactions.filter(paymentid=paymentid).exists()
+        trans_exists = Transactions.objects.select_related("KnetTransactions").KnetTransactions.filter(paymentid=paymentid).exists()
 
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
