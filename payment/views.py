@@ -9,8 +9,8 @@ from .utils import *
 
 class KnetProcess(View):
     def get(self, request, *args, **kwargs):
-        paymentid = request.GET.get("paymentid")
-        trans_exists = Transactions.objects.select_related("KnetTransactions").all().KnetTransactions.filter(paymentid=paymentid).exists()
+        paymentid = request.GET.get("PaymentID")
+        trans_exists = Transactions.objects.filter(KnetTransactions__paymentid__contains=paymentid).exists()
 
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
@@ -18,7 +18,7 @@ class KnetProcess(View):
         if trans.user != request.user:
             return HttpResponse('Unauthorized', status=401)
 
-        trans = Transactions.select_related("KnetTransactions").KnetTransactions.filter(paymentid=paymentid)
+        trans = Transactions.objects.filter(KnetTransactions__paymentid__contains=paymentid)
 
         if trans.KnetTransactions.paid == True:
             messages.success(request, "Payment successful")
@@ -26,10 +26,6 @@ class KnetProcess(View):
             messages.info(request, "Payment Failed")
 
         return redirect('/account/')
-
-
-
-
 
     def post(self,request, *args, **kwargs):
         paymentid = request.POST.get("paymentid")
@@ -41,7 +37,7 @@ class KnetProcess(View):
         postdate = date(date.today().year, postdate[:1], postdate[2:3:])
         trackid = request.POST.get("trackid")
 
-        trans_exists = Transactions.objects.filter(trackid=trackid).select_related('KnetTransactions').KnetTransactions.filter(paymentid=paymentid).exists()
+        trans_exists = Transactions.objects.filter(trackid=trackid).filter(KnetTransactions__paymentid__contains=paymentid).exists()
 
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
