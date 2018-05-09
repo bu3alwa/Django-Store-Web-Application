@@ -15,10 +15,11 @@ class KnetProcess(View):
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
         
+        trans = Transactions.objects.filter(KnetTransactions__paymentid__contains=paymentid)
+
         if trans.user != request.user:
             return HttpResponse('Unauthorized', status=401)
 
-        trans = Transactions.objects.filter(KnetTransactions__paymentid__contains=paymentid)
 
         if trans.KnetTransactions.paid == True:
             messages.success(request, "Payment successful")
