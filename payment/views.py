@@ -114,7 +114,7 @@ def gotap_process(request):
                 end_date=end_date,
                 )
 
-        Transactions.objects.select_related("GotapTransactions").GotapTransactions.filter(pk=gotaptrans.pk).update(subscription_updated=True)
+        Transactions.objects.select_related("GotapTransactions").filter(GotapTransactions=gotaptrans).update(subscription_updated=True)
         messages.success(request, "Payment successful")
     else:
         messages.info(request, "Payment Failed")
