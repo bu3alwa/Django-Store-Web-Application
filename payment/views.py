@@ -10,7 +10,7 @@ from .utils import *
 class KnetProcess(View):
     def get(self, request, *args, **kwargs):
         paymentid = request.GET.get("paymentid")
-        trans_exists = Transactions.objects.select_related("KnetTransactions").KnetTransactions.filter(paymentid=paymentid).exists()
+        trans_exists = Transactions.objects.select_related("KnetTransactions").all().KnetTransactions.filter(paymentid=paymentid).exists()
 
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
@@ -41,7 +41,7 @@ class KnetProcess(View):
         postdate = date(date.today().year, postdate[:1], postdate[2:3:])
         trackid = request.POST.get("trackid")
 
-        trans_exists = Transactions.objects.filter(trackid=trackid).select_related('KnetTransactions').filter(paymentid=paymentid).exists()
+        trans_exists = Transactions.objects.filter(trackid=trackid).select_related('KnetTransactions').KnetTransactions.filter(paymentid=paymentid).exists()
 
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
