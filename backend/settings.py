@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'backend',
     'store',
     'templates',
-    'django_summernote'
+    'django_summernote',
+    'payment',
 ]
 
 MIDDLEWARE = [

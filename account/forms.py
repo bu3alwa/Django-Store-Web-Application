@@ -5,6 +5,8 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import UserCreationForm
 from datetime import date
 from .models import Profile
+from store.models import SubscriptionModel
+from payment.choices import *
 
 class ProfileForm(forms.ModelForm):
     address = forms.CharField(
@@ -88,3 +90,25 @@ class ProfileForm(forms.ModelForm):
         exclude = ['user']
         
         
+class BillingForm(forms.Form):
+    submodel = SubscriptionModel.objects.all()
+    submodel = submodel.exclude(length='14')
+
+
+    subscription_type = forms.ChoiceField(
+            label=_("Subscription"),
+            choices=((x.id, x.name + ' for ' + x.price + " KD") for x in submodel),
+            widget=forms.Select(
+                attrs={
+                    'class': 'custom-select',
+                    }),
+                )
+
+    payment_options = forms.ChoiceField(
+            label=_("Payment options"),
+            choices=PAYMENT_OPTIONS,
+            widget=forms.RadioSelect(
+                attrs={
+                    'class': 'form-check',
+                    }),
+                )

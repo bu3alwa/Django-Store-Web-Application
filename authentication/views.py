@@ -22,5 +22,5 @@ def register_view(request):
     return render(request, 'authentication/register.html', {'form': f})
 
 
-def register_sucess(request):
+def register_success(request):
     return render(request, 'authentication/register_success.html')

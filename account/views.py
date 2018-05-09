@@ -1,22 +1,42 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate, get_user_model
-from .forms import ProfileForm
+from .forms import ProfileForm, BillingForm
 from django.contrib import messages
 from .models import Profile, Subscription
 from store.models import SubscriptionModel
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.http import require_http_methods
+from payment.utils import GotapHandler, KnetHandler
 
-# Create your views here.
+def profile_required(function):
+    def wrap(request, *args, **kwargs):
+        user = request.user
+        try:
+            profile = request.user.Profile
+        except ObjectDoesNotExist:
+            profile = None
+
+        if profile == None:
+            messages.info(request, "Must have a profile")
+            return redirect('/account/profile')
+        else:
+            return function(request, *args, **kwargs)
+    return wrap
 
 @login_required
 def index(request):
     user = request.user
-    sub_exists = Subscription.objects.filter(user=user).exists()
+    try:
+        sub = request.user.Subscription
+    except ObjectDoesNotExist:
+        sub = None
+
 
     if request.method == "POST":
-        if sub_exists:
+        if sub != None:
             messages.success(request, "Free Trial has expired")
             return redirect('/account')
 
@@ -31,13 +51,12 @@ def index(request):
                     start_date=date.today(),
                     end_date=end_date,
                     )
-            s.save()
 
             return redirect('/account')
 
     else:
-        if sub_exists:
-            subscription = Subscription.objects.filter(user=user).order_by('-end_date').first()
+        if sub != None:
+            subscription = sub.order_by('-end_date').first()
 
             return render(request, 'account/index.html', {'user': user, 'account': subscription })
 
@@ -46,12 +65,15 @@ def index(request):
 @login_required
 def profile(request):
     user = request.user
-    profile_exists = Profile.objects.filter(user=user).exists()
-    if profile_exists:
-        profile = Profile.objects.filter(user=user).first()
+
+    try:
+        profile = request.user.Profile
+    except ObjectDoesNotExist:
+        profile = None
+
 
     if request.method == "POST":
-        if profile_exists:
+        if profile != None:
             f = ProfileForm(data=request.POST, instance=profile)
         else:
             f = ProfileForm(data=request.POST)
@@ -65,7 +87,7 @@ def profile(request):
             return redirect("/account/profile") 
 
     else:
-        if profile_exists:
+        if profile != None:
             f = ProfileForm(instance=profile)
         else:
             f = ProfileForm()
@@ -73,5 +95,33 @@ def profile(request):
     return render(request, 'account/profile.html', {'form': f})
 
 @login_required
+@profile_required
 def billing(request):
+    if request.method == "POST":
+        form = BillingForm(request.POST)
+        if form.is_valid(): 
+            sub_selected = form.cleaned_data['subscription_type']
+            sub = SubscriptionModel.objects.get(id=sub_selected)
+            payment_options = form.cleaned_data['payment_options']
+            user = request.user
+
+            if payment_options == "KNET":
+                redirect_url = KnetHandler(user, sub, payment_options)
+            elif payment_options == "GoTap":
+                redirect_url = GotapHandler(user, sub, payment_options)
+            if redirect_url != None:
+                return redirect(redirect_url)
+            else:
+                messages.Error(request, "Payment gateway failure, please try again later")
+                return redirect('/account/billing')
+                
+
+    else:
+        f = BillingForm()
+        return render(request, 'account/billing.html', {'form': f})
+
+@login_required
+@require_http_methods(["POST"])
+def cancel(request):
     pass
+

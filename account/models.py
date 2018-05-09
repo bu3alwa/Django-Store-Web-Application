@@ -32,7 +32,9 @@ class Profile(models.Model):
 
     user = models.OneToOneField(
             settings.AUTH_USER_MODEL, 
-            on_delete=models.CASCADE)
+            on_delete=models.PROTECT,
+            related_name="Profile")
+
 
     @property
     def full_address(self):
@@ -42,11 +44,13 @@ class Profile(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(
             settings.AUTH_USER_MODEL, 
-            on_delete=models.CASCADE)
+            on_delete=models.PROTECT,
+            related_name='Subscription')
 
-    subscription = models.OneToOneField(
+    subscription = models.ForeignKey(
             SubscriptionModel,
-            on_delete=models.CASCADE)
+            on_delete=models.PROTECT,
+            related_name="SubscriptionModel")
 
     renew = models.BooleanField()
 

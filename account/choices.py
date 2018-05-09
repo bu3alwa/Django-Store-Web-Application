@@ -8,3 +8,4 @@ COUNTRY_CHOICES = (
 
 year = datetime.now().year
 YEARS = [ x for x in range(1940,year)]
+
