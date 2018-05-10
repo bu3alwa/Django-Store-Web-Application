@@ -16,5 +16,5 @@ def CreatePayment(ammount, currencycode, returnurl, errorurl, trackid):
         return None
 
 def CreateURL(path, paymentid):
-    return path + '?PaymentID=' + paymentid
+    return path + '?Paymentid=' + paymentid
 

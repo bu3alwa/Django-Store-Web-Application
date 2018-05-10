@@ -11,9 +11,9 @@ from .utils import *
 
 @method_decorator(csrf_exempt, name='dispatch')
 class KnetProcess(View):
-    #@method_decorator(csrf_protect)
+    @method_decorator(csrf_protect)
     def get(self, request, *args, **kwargs):
-        paymentid = request.GET.get("PaymentID")
+        paymentid = request.GET.get("paymentid")
         trans_exists = Transactions.objects.filter(KnetTransactions__paymentid__contains=paymentid).exists()
 
         if not trans_exists:
@@ -33,7 +33,7 @@ class KnetProcess(View):
         return redirect('/account/')
 
     def post(self,request, *args, **kwargs):
-        paymentid = request.POST.get("paymentID")
+        paymentid = request.POST.get("paymentid")
         result = request.POST.get("result")
         auth = request.POST.get("auth")
         ref = request.POST.get("ref")
