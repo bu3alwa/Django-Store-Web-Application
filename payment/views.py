@@ -33,7 +33,7 @@ class KnetProcess(View):
         return redirect('/account/')
 
     def post(self,request, *args, **kwargs):
-        paymentid = request.POST.get("paymentid")
+        paymentid = request.POST.get("paymentID")
         result = request.POST.get("result")
         auth = request.POST.get("auth")
         ref = request.POST.get("ref")
