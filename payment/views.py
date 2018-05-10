@@ -53,6 +53,7 @@ class KnetProcess(View):
 
         if trans.subscription_updated == True:
             return HttpResponse("Already updated", status=400)
+
         #KnetUpdate(knettrans, result, auth, ref, transid, postdate, url):
         url = KnetUpdate(trans.KnetTransactions, result, auth, ref, transid, postdate, request.path) 
         trans.refresh_from_db()
