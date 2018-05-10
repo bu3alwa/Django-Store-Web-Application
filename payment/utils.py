@@ -92,6 +92,6 @@ def KnetUpdate(knettrans, result, auth, ref, transid, postdate, url):
     KnetTransactions.objects.filter(pk=knettrans.pk).update(paid=paid, result=result, auth=auth, ref=ref, transid=transid)
 
     
-    return "REDIRECT=https://" + settings.BASE_SITE_URL + '/payment/knet?paymentID='  + knettrans.paymentid
+    return "REDIRECT=https://" + settings.BASE_SITE_URL + '/payment/knet?paymentid='  + knettrans.paymentid
 
 
