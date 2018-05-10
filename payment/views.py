@@ -39,8 +39,6 @@ class KnetProcess(View):
         ref = request.POST.get("ref")
         transid = request.POST.get("tranid")
         postdate = request.POST.get("postdate")
-        print(postdate)
-        print(postdate[:2])
         postdate = date(date.today().year, int(postdate[:2]),int(postdate[2:4]))
         trackid = request.POST.get("trackid")
 
