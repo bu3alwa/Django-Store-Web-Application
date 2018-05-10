@@ -1,6 +1,7 @@
 from .models import Transactions, KnetTransactions, GotapTransactions
 from payment.gotap import gotap
 from payment.knet import knet
+from django.conf import settings
 import json
 
 #def CreatePayment(ammount, returnurl, posturl, ordernumber, description, phonenumber, email, currency):
@@ -91,6 +92,6 @@ def KnetUpdate(knettrans, result, auth, ref, transid, postdate, url):
     KnetTransactions.objects.filter(pk=knettrans.pk).update(paid=paid, result=result, auth=auth, ref=ref, transid=transid)
 
     
-    return "https://bdoonlag.com/payment/knet?paymentID=" + knettrans.paymentid
+    return "REDIRECT=https://" + settings.BASE_SITE_URL + '/?paymentID='  + knettrans.paymentid
 
 

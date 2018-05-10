@@ -18,9 +18,3 @@ def CreatePayment(ammount, currencycode, returnurl, errorurl, trackid):
 def CreateURL(path, paymentid):
     return path + '?PaymentID=' + paymentid
 
-
-def RedirectPayment(RedirectURL, paymentID):
-    headers = {'Content-Type': 'x-www-form-urlencoded'}
-    data = {'paymentID': paymentID}
-    url = KNET_URL + '/' + RedirectURL
-    r = requests.post(url, headers=headers, params=data)

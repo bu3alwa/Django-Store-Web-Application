@@ -28,6 +28,7 @@ SSL_ON = False
 TEST_GATEWAY = True
 
 ALLOWED_HOSTS = []
+BASE_SITE_URL = ""
 
 
 # Application definition
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'account',
     'api',
     'articles',

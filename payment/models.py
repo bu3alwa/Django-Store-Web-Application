@@ -31,7 +31,7 @@ class KnetTransactions(models.Model):
     auth = models.CharField(max_length=255, blank=True)
     ref = models.CharField(max_length=255, blank=True)
     postdate = models.DateField(blank=True, null=True)
-    transid = models.CharField(max_length=14, blank=True)
+    transid = models.CharField(max_length=16, blank=True)
 
     created_at = models.DateField(auto_now_add=True, blank=True)
 

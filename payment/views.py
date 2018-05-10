@@ -5,9 +5,13 @@ from django.contrib import messages
 from datetime import date, timedelta
 from account.models import Subscription
 from django.views import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from .utils import *
 
+@method_decorator(csrf_exempt, name='dispatch')
 class KnetProcess(View):
+    #@method_decorator(csrf_protect)
     def get(self, request, *args, **kwargs):
         paymentid = request.GET.get("PaymentID")
         trans_exists = Transactions.objects.filter(KnetTransactions__paymentid__contains=paymentid).exists()
@@ -35,7 +39,9 @@ class KnetProcess(View):
         ref = request.POST.get("ref")
         transid = request.POST.get("tranid")
         postdate = request.POST.get("postdate")
-        postdate = date(date.today().year, postdate[:1], postdate[2:3:])
+        print(postdate)
+        print(postdate[:2])
+        postdate = date(date.today().year, int(postdate[:2]),int(postdate[2:4]))
         trackid = request.POST.get("trackid")
 
         trans_exists = Transactions.objects.filter(trackid=trackid).filter(KnetTransactions__paymentid__contains=paymentid).exists()
@@ -43,10 +49,10 @@ class KnetProcess(View):
         if not trans_exists:
             return HttpResponseNotFound("Does not exist")
 
-        trans = Transactions.objects.select_related("KnetTransactions").filter(trackid=trackid)
+        trans = Transactions.objects.select_related("KnetTransactions").get(trackid=trackid)
 
-        if trans.subscription_update == True:
-            return HttpReponseNotFound("Already updated")
+        if trans.subscription_updated == True:
+            return HttpResponse("Already updated", status=400)
         #KnetUpdate(knettrans, result, auth, ref, transid, postdate, url):
         url = KnetUpdate(trans.KnetTransactions, result, auth, ref, transid, postdate, request.path) 
         trans.refresh_from_db()
