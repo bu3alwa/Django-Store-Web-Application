@@ -3,5 +3,5 @@ django==2.0.2
 psycopg2==2.7.3.2
 gevent==1.2.2
 django-summernote
-djangorestframework==3.8.2
+djangorestframework==3.9.1
 requests
